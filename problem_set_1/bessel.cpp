@@ -22,7 +22,7 @@
 #include <iomanip>		// note that .h is omitted
 #include <fstream>		// note that .h is omitted
 #include <cmath>
-//#include <gslgsl/gsl_sf_bessel.h>
+#include <gsl/gsl_sf_bessel.h>
 using namespace std;		// we need this when .h is omitted
 
 // function prototypes 
@@ -54,12 +54,12 @@ main ()
     {
       ans_down = down_recursion (x, order, start);
       ans_up = up_recursion (x, order);
-      rel_diff = relative (x,start);
+      rel_diff = fabs(ans_down-ans_up)/(fabs(ans_down)+fabs(ans_up));
 
       my_out << fixed << setprecision (10) << setw (13) << x << "  "
 	<< scientific << setprecision (10)
 	<< setw (13) << ans_down << "  "
-	<< setw (13) << ans_up 
+	<< setw (13) << ans_up << "  "
   << setw (13) << rel_diff
         << endl;
     }
@@ -105,13 +105,4 @@ up_recursion (double x, int n)
       term_two = term_three;
     }
   return (term_three);
-}
-
-double
-relative  (int n, int m)
-{ int result;
-  for (int m = 1; m < n; m += 1) 
-    {result = fabs(m-n)/(fabs(m)+fabs(n));}
-  return (result);
-
 }
